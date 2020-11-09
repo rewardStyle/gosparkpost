@@ -56,6 +56,7 @@ func main() {
 	var url = flag.String("url", "", "base url for api requests (optional)")
 	var help = flag.Bool("help", false, "display a help message")
 	var httpDump = flag.Bool("httpdump", false, "dump out http request and response")
+	var transactional = flag.Bool("transactional", false, "mark transmission as transactional")
 
 	flag.Parse()
 
@@ -279,6 +280,13 @@ func main() {
 			tx.Options = &sp.TxOptions{}
 		}
 		tx.Options.InlineCSS = inline
+	}
+
+	if *transactional != false {
+		if tx.Options == nil {
+			tx.Options = &sp.TxOptions{}
+		}
+		tx.Options.TmplOptions.Transactional = transactional
 	}
 
 	if *dryrun != false {
